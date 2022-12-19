@@ -95,6 +95,6 @@ document.querySelector("#generate").addEventListener("click",
 			if(e === 2)
 				window.alert("You must input a password length."); //handle
 			else if(e === 1)
-				window.alert("You must select at least on character set."); //handle
+				window.alert("You must select at least one character set."); //handle
 		}
 	});
