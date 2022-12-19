@@ -50,6 +50,26 @@ header {
   height: 2px;
 }
 
+.card-settings {
+	padding-top: 1em;
+	padding-bottom: 1em;
+}
+
+.password-toggles {
+	display: flex;
+	flex-flow: row wrap;
+	width: 50%;
+	margin: 1em auto;
+}
+
+.password-toggles > * {
+	flex: 1 1 50%;
+}
+
+.password-length {
+	text-align: center;
+}
+
 .card-body {
   min-height: 100px;
 }
@@ -130,8 +150,20 @@ button[disabled] {
   }
 }
 
+@media screen and (max-width: 600px) {
+	.password-toggles {
+		width: 100%;
+	}
+}
+
 @media (max-width: 500px) {
   .btn {
     font-size: 0.8rem;
   }
+}
+
+@media screen and (max-width: 400px) {
+	.password-toggles > * {
+		flex-basis: 100%;
+	}
 }
