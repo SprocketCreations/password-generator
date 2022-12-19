@@ -1,5 +1,7 @@
 # Password Generator
 
+![Image of deployed application](preview.jpg)
+
 ## Description
 
 This is a simple Javascript Web App that can generate a password for you.
