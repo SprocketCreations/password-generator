@@ -10,7 +10,7 @@ N/A
 
 ## Usage
 
-You can view the site [here.](https://sprocketcreations.github.io/password-generator/) 
+You can view the site [here.](https://sprocketcreations.github.io/password-generator/) Use the checkboxes to select your prefered character set, and enter the length you want for your password. Then click Generate, and viola!
 
 ## Credits
 
