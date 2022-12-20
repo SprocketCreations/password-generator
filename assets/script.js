@@ -1,8 +1,13 @@
+// These are the characters used in the password generation
+// They are divided into 4 arrays, 1 for each selectable group
 const VALID_LOWERCASE_CHARACTERS = Array.from("abcdefghijklmnopqrstuvwxyz");
 const VALID_UPPERCASE_CHARACTERS = Array.from("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 const VALID_NUMERIC_CHARACTERS = Array.from("1234567890");
 const VALID_SPECIAL_CHARACTERS = Array.from(" !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~");
 
+// This returns the user's required password length via the DOM
+// If the user enters nothing, it returns NaN, so isNan can be used
+// to verify output.
 function getPasswordLength()
 {
 	const DOM_PASSWORD_LENGTH = document.getElementById("password-length");
@@ -13,6 +18,7 @@ function getPasswordLength()
 	return Number(value);
 }
 
+// Returns an object with 4 bools dictating the user's required charsets
 function getPasswordSettings()
 {
 	const DOM_INCLUDE_LOWERCASE = document.getElementById("include-lowercase");
@@ -30,17 +36,23 @@ function getPasswordSettings()
 	return settings;
 }
 
+// Returns false if no charsets have been required
 function verifySettings(settings)
 {
+	//Object.entries returns an array of pairs...
 	const entries = Object.entries(settings);
 	for(let i = 0; i < entries.length; ++i)
 	{
+		//...So we need to access the value with [1]
 		if(entries[i][1])
 			return true;
 	}
 	return false;
 }
 
+// Merges the charsets from the top of this file
+// into one charset according to the user's
+// required character sets
 function getCharset(settings)
 {
 	let charset = [];
@@ -57,6 +69,9 @@ function getCharset(settings)
 	return charset;
 }
 
+// Generates a password according to the user's settings
+// Throws 1 if the user has invalid password settings
+// Throws 2 if the user has given an invalid length
 function generatePassword() 
 {
 	const passwordSettings = getPasswordSettings();
@@ -73,8 +88,10 @@ function generatePassword()
 
 	const CHARSET = getCharset(passwordSettings);
 	const CHAR_ARRAY = [];
+	//For each character in our new password:
 	for(let i = 0; i < passwordLength; ++i)
 	{
+		//Pick a random character from the charset.
 		let char = CHARSET[Math.floor(Math.random() * CHARSET.length)];
 		CHAR_ARRAY[i] = char;
 	}
@@ -82,6 +99,9 @@ function generatePassword()
 	return CHAR_ARRAY.join("");
 }
 
+// Creates an event listener on the submit button
+// that fills the output field with the generated password
+// or displays an alert if an issue is encountered.
 document.querySelector("#generate").addEventListener("click",
 	function()
 	{
@@ -96,5 +116,8 @@ document.querySelector("#generate").addEventListener("click",
 				window.alert("You must input a password length."); //handle
 			else if(e === 1)
 				window.alert("You must select at least one character set."); //handle
+			else
+			//This is not our error, so pass it up the chain.
+				throw e;
 		}
 	});
