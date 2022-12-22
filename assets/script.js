@@ -10,17 +10,28 @@ const VALID_SPECIAL_CHARACTERS = Array.from(" !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~
 // to verify output.
 function getPasswordLength()
 {
+	/** 
 	const DOM_PASSWORD_LENGTH = document.getElementById("password-length");
 
 	const value = DOM_PASSWORD_LENGTH.value;
 	if(value === '')
 		return NaN;
 	return Number(value);
+	/**/
+
+	let response;
+	do {
+		response = prompt("Please enter your password length:\n(must be between 8 and 128)");
+		response = Number(response);
+	} while(isNaN(response) || response < 8 || response > 128);
+
+	return response;
 }
 
 // Returns an object with 4 bools dictating the user's required charsets
 function getPasswordSettings()
 {
+	/**
 	const DOM_INCLUDE_LOWERCASE = document.getElementById("include-lowercase");
 	const DOM_INCLUDE_UPPERCASE = document.getElementById("include-uppercase");
 	const DOM_INCLUDE_NUMERIC = document.getElementById("include-numeric");
@@ -32,6 +43,23 @@ function getPasswordSettings()
 	settings.uppercase = DOM_INCLUDE_UPPERCASE.checked;
 	settings.numeric = DOM_INCLUDE_NUMERIC.checked;
 	settings.special = DOM_INCLUDE_SPECIAL.checked;
+
+	return settings;
+	/**/
+
+	const settings = {};
+
+	while(true) {
+		settings.lowercase = confirm("Would you like lowercase characters in your password?\nOk = Yes, Cancel = No");
+		settings.uppercase = confirm("Would you like uppercase characters in your password?\nOk = Yes, Cancel = No");
+		settings.numeric = confirm("Would you like numeric characters in your password?\nOk = Yes, Cancel = No");
+		settings.special = confirm("Would you like special characters in your password?\nOk = Yes, Cancel = No");
+
+		if(verifySettings(settings))
+			break;
+		
+		alert("Please select at least one character group.");
+	}
 
 	return settings;
 }
@@ -75,17 +103,8 @@ function getCharset(settings)
 function generatePassword() 
 {
 	const passwordSettings = getPasswordSettings();
-	if(!verifySettings(passwordSettings))
-	{
-		throw 1;
-	}
-
 	const passwordLength = getPasswordLength();
-	if(typeof passwordLength !== "number" || isNaN(passwordLength))
-	{
-		throw 2;
-	}
-
+	
 	const CHARSET = getCharset(passwordSettings);
 	const CHAR_ARRAY = [];
 	//For each character in our new password:
@@ -105,19 +124,7 @@ function generatePassword()
 document.querySelector("#generate").addEventListener("click",
 	function()
 	{
-		try
-		{
-			const password = generatePassword();
-			document.querySelector("#password").value = password;
-		}
-		catch(e)
-		{
-			if(e === 2)
-				window.alert("You must input a password length."); //handle
-			else if(e === 1)
-				window.alert("You must select at least one character set."); //handle
-			else
-			//This is not our error, so pass it up the chain.
-				throw e;
-		}
+		const password = generatePassword();
+		document.querySelector("#password").value = password;
+		
 	});
